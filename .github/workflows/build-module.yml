@@ -151,16 +151,33 @@ jobs:
           # echo "CONFIG_PACKAGE_3proxy=y" >> .config
 
           make defconfig
+      
+      - name: Building tools
+        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+        run: |
+          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"    
           
+          cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
+
           echo "current $(date)"
           echo "    > make tools/install"
           make tools/install -i -j `nproc`
+
+      - name: Building toolchain
+        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+        run: |
+          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"   
 
           cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
 
           echo "current $(date)"
           echo "    > make toolchain/install"
           make toolchain/install  -i -j `nproc`
+
+      - name: Building linux
+        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+        run: |
+          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"      
 
           cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
 
@@ -251,7 +268,7 @@ jobs:
       - name: Prepare artifacts
         run: |
           # tag_name=${{  github.ref_name }}
-          tag_name=$(date)
+          tag_name=`date '+%d-%B-%Y'`
           mkdir -p release
           postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
           cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk release/amneziawg-tools_${postfix}.ipk
