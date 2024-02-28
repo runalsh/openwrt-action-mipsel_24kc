@@ -32,6 +32,12 @@ jobs:
             url_sdk: https://downloads.openwrt.org/releases/23.05.0/targets/ramips/rt288x/openwrt-sdk-23.05.0-ramips-rt288x_gcc-12.3.0_musl.Linux-x86_64.tar.xz
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: openwrt/openwrt
+          ref: v${{ matrix.build_env.tag }}
+          fetch-depth: 0
+      
       # - name: install necessary tools
       #   env:
       #     DEBIAN_FRONTEND: noninteractive
@@ -44,12 +50,7 @@ jobs:
       #     pip3 install setuptools
       #     sudo -E apt-get -qq autoremove --purge
       #     sudo -E apt-get -qq clean
-      - uses: actions/checkout@v4
-        with:
-          repository: openwrt/openwrt
-          ref: v${{ matrix.build_env.tag }}
-          fetch-depth: 0
-      
+
       # - name: ${{ matrix.platform }} sdk download
       #   run: |
       #     wget ${{ matrix.url_sdk }}
@@ -197,53 +198,53 @@ jobs:
           make V=s package/amneziawg-tools/{clean,download,prepare} -j `nproc`
           make V=s package/amneziawg-tools/compile -j `nproc`
 
-      - name: Build PassWall
-        run: |
-            VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-            echo "Vermagic: $VERMAGIC"
+      # - name: Build PassWall
+      #   run: |
+      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+      #       echo "Vermagic: $VERMAGIC"
   
-            VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
   
-            if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-              echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-              exit 1
-            fi
+      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+      #         exit 1
+      #       fi
             
-            echo "current $(date)"
-            make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
-            make package/luci-app-passwall/compile V=s -j `nproc` || true
+      #       echo "current $(date)"
+      #       make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
+      #       make package/luci-app-passwall/compile V=s -j `nproc` || true
 
-      - name: Build 3proxy
-        run: |
-            VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-            echo "Vermagic: $VERMAGIC"
+      # - name: Build 3proxy
+      #   run: |
+      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+      #       echo "Vermagic: $VERMAGIC"
   
-            VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
   
-            if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-              echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-              exit 1
-            fi
+      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+      #         exit 1
+      #       fi
   
-            echo "current $(date)"
-            make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
-            make package/3proxy/compile V=s -j `nproc` || true        
+      #       echo "current $(date)"
+      #       make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
+      #       make package/3proxy/compile V=s -j `nproc` || true        
           
-      - name: Build helloworld
-        run: |
-            VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-            echo "Vermagic: $VERMAGIC"
+      # - name: Build helloworld
+      #   run: |
+      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+      #       echo "Vermagic: $VERMAGIC"
   
-            VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
   
-            if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-              echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-              exit 1
-            fi
+      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+      #         exit 1
+      #       fi
   
-            echo "current $(date)"
-            make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
-            make package/helloworld/compile V=s -j `nproc` || true         
+      #       echo "current $(date)"
+      #       make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
+      #       make package/helloworld/compile V=s -j `nproc` || true         
             
       - name: Prepare artifacts
         run: |
