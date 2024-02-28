@@ -95,6 +95,8 @@ jobs:
 
           # echo "src-git helloworld https://github.com/fw876/helloworld.git" >> ./feeds.conf
 
+          # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt.git" >> ./feeds.conf
+
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
           # Setup config with AWG and dependencies
@@ -151,6 +153,8 @@ jobs:
           # echo "CONFIG_PACKAGE_luci-app-openclash=y" >> .config
 
           # echo "CONFIG_PACKAGE_3proxy=y" >> .config
+
+          # echo "CONFIG_PACKAGE_telegram_openwrt=y" >> .config
 
           make defconfig
       
@@ -291,6 +295,9 @@ jobs:
             
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/helloworld/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/helloworld/*.ipk release/
+
+          # cp bin/packages/${{ matrix.build_env.pkgarch }}/telegram_openwrt/*.ipk release/
+          # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/telegram_openwrt/*.ipk release/
 
       - name: Release
         uses: softprops/action-gh-release@v1
