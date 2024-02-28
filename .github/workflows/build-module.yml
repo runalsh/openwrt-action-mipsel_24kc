@@ -93,9 +93,9 @@ jobs:
 
           # echo "src-git 3proxy https://github.com/osnosn/3proxy-openwrt" >> ./feeds.conf
 
-          # echo "src-git helloworld https://github.com/fw876/helloworld.git" >> ./feeds.conf
+          # echo "src-git helloworld https://github.com/fw876/helloworld" >> ./feeds.conf
 
-          # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt.git" >> ./feeds.conf
+          # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
 
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
