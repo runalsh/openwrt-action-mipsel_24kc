@@ -1,1 +1,1 @@
-github action for compiling ipks for mipsel-24kc
+github action for compiling ipks mipsel-24kc
