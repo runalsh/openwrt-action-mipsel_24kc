@@ -36,7 +36,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: 
-          docker rmi `docker images -q`
+          # docker rmi `docker images -q`
           sudo -E apt-get update
           sudo -E apt-get -y upgrade
           sudo -E apt-get -y dist-upgrade
