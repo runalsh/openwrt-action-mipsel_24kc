@@ -266,6 +266,7 @@ jobs:
       #       make package/helloworld/compile V=s -j `nproc` || true         
             
       - name: Prepare artifacts
+        continue-on-error: true
         run: |
           # tag_name=${{  github.ref_name }}
           tag_name=`date '+%d-%B-%Y'`
@@ -288,6 +289,7 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
+        continue-on-error: true
         with:
           files: release/*.ipk
 
