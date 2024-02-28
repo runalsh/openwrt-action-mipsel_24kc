@@ -81,6 +81,7 @@ jobs:
 
           # Setup config with AWG and dependencies
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+          
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
@@ -214,6 +215,8 @@ jobs:
 
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/luci-app-passwall*.ipk release/luci-app-passwall_${postfix}.ipk
+          # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall_packages/*.ipk release/
+          # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/passwall_packages*.ipk release/
 
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/3proxy/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/*.ipk release/
