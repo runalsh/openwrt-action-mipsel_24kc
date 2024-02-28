@@ -78,6 +78,7 @@ jobs:
 
           # Setup & install feeds
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
+          # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/feeds.buildinfo -O feeds.conf
           
           # echo "src-git luci https://github.com/openwrt/luci.git;openwrt-23.05" >> feeds.conf
           # echo "src-git packages https://git.openwrt.org/feed/packages.git;openwrt-23.05" >> feeds.conf
@@ -98,6 +99,7 @@ jobs:
 
           # Setup config with AWG and dependencies
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+          # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
           
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
@@ -152,6 +154,10 @@ jobs:
 
           make defconfig
       
+          # make tools/install -i -j `nproc`
+          # make toolchain/install  -i -j `nproc`
+          # make target/linux/compile  -i -j `nproc` V=s
+
       - name: Building tools
         if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
         run: |
