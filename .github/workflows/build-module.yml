@@ -97,6 +97,7 @@ jobs:
 
           # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
 
+          # ./scripts/feeds clean
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
           # Setup config with AWG and dependencies
