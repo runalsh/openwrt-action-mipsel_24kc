@@ -1,9 +1,9 @@
 name: Create Release on Tag
-on: [workflow_dispatch]
-# on:
-#   push:
-#     tags:
-#       - "v*.*.*"
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
 
 # orig https://github.com/yury-sannikov/awg-openwrt/blob/master/.github/workflows/build-module.yml
 # passwall from https://github.com/xiaorouji/openwrt-passwall/blob/main/.github/workflows/Auto%20compile%20with%20openwrt%20sdk.yml
