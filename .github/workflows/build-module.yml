@@ -280,11 +280,11 @@ jobs:
         continue-on-error: true
         run: |
           tag_name=${{  github.ref_name }}
-          mkdir -p release
+          mkdir -p awgrelease
           postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
-          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk release/amneziawg-tools_${postfix}.ipk
-          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/luci-app-amneziawg_*.ipk release/luci-app-amneziawg_${postfix}.ipk
-          cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk release/kmod-amneziawg_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk awgrelease/amneziawg-tools_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/luci-app-amneziawg_*.ipk awgrelease/luci-app-amneziawg_${postfix}.ipk
+          cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk awgrelease/kmod-amneziawg_${postfix}.ipk
 
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/luci-app-passwall*.ipk release/luci-app-passwall_${postfix}.ipk
@@ -304,4 +304,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         continue-on-error: true
         with:
-          files: release/*.ipk
+          files: awgrelease/*.ipk
