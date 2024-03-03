@@ -11,7 +11,7 @@ on:
 # helloworld https://github.com/fw876/helloworld
 
 jobs:
-  build:
+  job_build:
     name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
     runs-on: [self-hosted, ubuntu]
     # runs-on: ubuntu-latest
@@ -23,57 +23,56 @@ jobs:
             target: ramips
             subtarget: mt7621
             vermagic: "9c242f353867f49a96054ff8c9f2c460"
-          # - tag: "23.05.2"
-          #   pkgarch: mipsel_24kc
-          #   target: ramips
-          #   subtarget: mt7621
-          #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
         include:
-          - platform: mipsel_24kc
-            url_sdk: https://downloads.openwrt.org/releases/23.05.0/targets/ramips/rt288x/openwrt-sdk-23.05.0-ramips-rt288x_gcc-12.3.0_musl.Linux-x86_64.tar.xz
-
+          - sdk_ver: 23.05
+            luci_ver: 23.05
+            sdk_url: https://downloads.openwrt.org/releases/23.05.0/targets/x86/64/openwrt-sdk-23.05.0-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@main
         with:
-          repository: openwrt/openwrt
-          ref: v${{ matrix.build_env.tag }}
           fetch-depth: 0
+          ref: 'sdk'
       
-      # - name: install necessary tools
-      #   env:
-      #     DEBIAN_FRONTEND: noninteractive
-      #   run: 
-      #     sudo -E apt-get -qq update
-      #     sudo -E apt-get -qq install mc nmon htop nano net-tools ncdu tar
-      #     sudo -E apt-get -qq install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf swig libtinfo5
-      #     sudo -E apt-get -qq install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget pip swig
-      #     pip3 install --upgrade pip
-      #     pip3 install setuptools
-      #     sudo -E apt-get -qq autoremove --purge
-      #     sudo -E apt-get -qq clean
-
-      # - name: ${{ matrix.platform }} sdk download
-      #   run: |
-      #     wget ${{ matrix.url_sdk }}
-      #     file_name=$(echo ${{matrix.url_sdk}} | awk -F/ '{print $NF}')
-      #     mkdir sdk && tar -xJf $file_name -C ./sdk --strip-components=1
-      #     cd sdk    
-
-      - name: Cache Tools and Kernel
-        id: cache-tools-kernel
-        uses: actions/cache@v4
+      - name: install necessary tools
         env:
-          cache-name: "cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}"
+          DEBIAN_FRONTEND: noninteractive
+        run: 
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install mc nmon htop nano net-tools ncdu tar
+          sudo -E apt-get -qq install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf swig libtinfo5
+          sudo -E apt-get -qq install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget pip swig
+          pip3 install --upgrade pip
+          pip3 install setuptools
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+      
+      - name: Cache openwrt SDK
+        id: cache-sdk
+        uses: actions/cache@v4
         with:
-          path: "**"
-          key: ${{ runner.os }}-build-vm4-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-vm4-cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-
+          path: sdk
+          key: openwrt-luci-${{ matrix.luci_ver }}-x86_64
+
+      # - name: Cache Tools and Kernel
+      #   id: cache-tools-kernel
+      #   uses: actions/cache@v4
+      #   env:
+      #     cache-name: "cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}"
+      #   with:
+      #     path: "**"
+      #     key: ${{ runner.os }}-build-vm4-${{ env.cache-name }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-vm4-cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-
 
       - name: Tree form gits and configs
-        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+        # if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         run: |
-          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"
+          wget ${{ matrix.sdk_url }}
+          file_name=$(echo ${{ matrix.sdk_url }} | awk -F/ '{print $NF}')
+          mkdir sdk && tar -xJf $file_name -C ./sdk --strip-components=1
+          cd sdk
 
           # Setup & install feeds
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
@@ -96,20 +95,25 @@ jobs:
           # echo "src-git helloworld https://github.com/fw876/helloworld" >> ./feeds.conf
 
           # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
-
-          # ./scripts/feeds clean
-          ./scripts/feeds update -a && ./scripts/feeds install -a
-
-          # Setup config with AWG and dependencies
-          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
-          # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
-          
+                    
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
+
+          # ./scripts/feeds clean
+          ./scripts/feeds update -a
+          ./scripts/feeds install -d n luci-app-amneziawg
+          ./scripts/feeds install -d n amneziawg-tools
+          ./scripts/feeds install -d n kmod-amneziawg
+          make download -j8
+           && ./scripts/feeds install -a
+
+          # Setup config with AWG and dependencies
+          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+          # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
 
           # echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
           # echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
@@ -163,78 +167,14 @@ jobs:
           # make toolchain/install  -i -j `nproc`
           # make target/linux/compile  -i -j `nproc` V=s
 
-          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-          VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-
-          if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-            echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-            exit 1
-          fi
-
-      - name: Building tools
-        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
-        run: |
-          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"    
-          
-          cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
-
-          echo "current $(date)"
-          echo "    > make tools/install"
-          make tools/install -i -j `nproc`
-
-      - name: Building toolchain
-        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
-        run: |
-          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"   
-
-          cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
-
-          echo "current $(date)"
-          echo "    > make toolchain/install"
-          make toolchain/install  -i -j `nproc`
-
-      - name: Building linux
-        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
-        run: |
-          echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"      
-
-          cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
-
-          echo "current $(date)"
-          # compile kernel module
-          echo "    > make target/linux/compile"
-          make target/linux/compile  -i -j `nproc` V=s
-
-          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-          VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-
-          if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-            echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-            exit 1
-          fi
-
       - name: Build AmneziaWG
         run: |
-          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-          echo "Vermagic: $VERMAGIC"
-
-          VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-
-          if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-            echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-            exit 1
-          fi
-
+          cd sdk
           echo "current $(date)"
-          # Ignore kmod build for some targets, replace with the awg-go
-          make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
-          make package/kmod-amneziawg/compile V=s -j `nproc`
 
-          make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
-          make package/luci-app-amneziawg/compile V=s -j `nproc`
-
-          make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
-          make package/amneziawg-tools/compile V=s -j `nproc`
+          make package/kmod-amneziawg/{clean,compile} V=s -j `nproc`
+          make package/luci-app-amneziawg/{clean,compile} V=s -j `nproc`
+          make package/amneziawg-tools/{clean,compile} V=s  -j `nproc`
 
       # - name: Build PassWall
       #   run: |
@@ -287,6 +227,17 @@ jobs:
       - name: Prepare artifacts
         continue-on-error: true
         run: |
+
+          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+          echo "Vermagic: $VERMAGIC"
+  
+          VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+  
+          if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+            echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+            exit 1
+          fi
+
           tag_name=${{  github.ref_name }}
           mkdir -p awgrelease
           postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
@@ -309,7 +260,7 @@ jobs:
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/telegram_openwrt/*.ipk release/
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@master
         continue-on-error: true
         with:
           files: awgrelease/*.ipk
