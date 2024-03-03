@@ -220,7 +220,6 @@ jobs:
       - name: Prepare artifacts
         continue-on-error: true
         run: |
-
           VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
           echo "Vermagic: $VERMAGIC"
   
@@ -232,16 +231,16 @@ jobs:
           fi
 
           tag_name=${{  github.ref_name }}
-          mkdir -p awgrelease
+          mkdir -p release
           postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
-          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk awgrelease/amneziawg-tools_${postfix}.ipk
-          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/luci-app-amneziawg_*.ipk awgrelease/luci-app-amneziawg_${postfix}.ipk
-          cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk awgrelease/kmod-amneziawg_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk release/amneziawg-tools_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/luci-app-amneziawg_*.ipk release/luci-app-amneziawg_${postfix}.ipk
+          cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk release/kmod-amneziawg_${postfix}.ipk
 
-          # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall/*.ipk release/
-          # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/luci-app-passwall*.ipk release/luci-app-passwall_${postfix}.ipk
-          # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall_packages/*.ipk release/
-          # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/passwall_packages*.ipk release/
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall/*.ipk release/
+          cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/luci-app-passwall*.ipk release/luci-app-passwall_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall_packages/*.ipk release/
+          cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/passwall_packages*.ipk release/
 
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/3proxy/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/*.ipk release/
@@ -258,4 +257,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: awgrelease/*.ipk
+          files: release/*.ipk
