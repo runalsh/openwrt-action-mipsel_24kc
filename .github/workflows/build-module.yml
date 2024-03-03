@@ -13,7 +13,7 @@ on:
 jobs:
   build:
     name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
-    runs-on: [self-hosted, wsl]
+    runs-on: [self-hosted, ubuntu]
     # runs-on: ubuntu-latest
     strategy:
       matrix:
