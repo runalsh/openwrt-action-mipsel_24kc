@@ -167,20 +167,9 @@ jobs:
       - name: Build AmneziaWG
         run: |
           cd sdk
-          
-          # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-          #   echo "Vermagic: $VERMAGIC"
-  
-          #   VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-          #   if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-          #     echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-          #     exit 1
-          #   fi
-
-          # make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
-          # make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
-          # make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
+          make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
+          make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
+          make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
 
       - name: Build PassWall
         run: |
@@ -208,6 +197,7 @@ jobs:
           tag_name=${{  github.ref_name }}
           mkdir -p release
           postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
+          
           cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk release/amneziawg-tools_${postfix}.ipk
           cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/luci-app-amneziawg_*.ipk release/luci-app-amneziawg_${postfix}.ipk
           cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk release/kmod-amneziawg_${postfix}.ipk
@@ -233,3 +223,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: release/*.ipk
+          tag_name: ${{  github.ref_name }}
