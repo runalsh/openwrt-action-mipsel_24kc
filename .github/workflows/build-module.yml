@@ -13,9 +13,8 @@ on:
 jobs:
   build:
     name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
-    # runs-on: [self-hosted, wsl]
-    #runs-on: [self-hosted, ubuntu]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, wsl]
+    # runs-on: ubuntu-latest
     strategy:
       matrix:
         build_env:
@@ -86,8 +85,9 @@ jobs:
           # echo "src-git telephony https://git.openwrt.org/feed/telephony.git;openwrt-23.05"  >> feeds.conf
           # echo "src-git routing https://git.openwrt.org/feed/routing.git;openwrt-23.05"  >> feeds.conf
 
-          echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git;a3294d150a664736722ca4d4e9b5301bc130e7b4" >> ./feeds.conf
-          
+          echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
+          #;a3294d150a664736722ca4d4e9b5301bc130e7b4
+
           # echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
           # echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages" >> ./feeds.conf
 
