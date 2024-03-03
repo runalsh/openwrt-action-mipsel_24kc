@@ -1,6 +1,6 @@
 github action for compiling ipks mipsel-24kc
 
-to add
+plans:
 
 https://github.com/lisaac/luci-app-dockerman/tree/master/applications/luci-app-dockerman
 
