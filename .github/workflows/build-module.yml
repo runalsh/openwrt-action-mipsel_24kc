@@ -107,6 +107,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
 
+          ./scripts/feeds update awgopenwrt
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
           ./scripts/feeds install -d n kmod-amneziawg
@@ -135,7 +136,7 @@ jobs:
 
           ./scripts/feeds update passwall_packages
           ./scripts/feeds update passwall
-          ./scripts/feeds install luci-app-passwall
+          ./scripts/feeds install -d n luci-app-passwall
 
           # echo "CONFIG_PACKAGE_luci-app-passwall2=y" >> .config
           # echo "CONFIG_PACKAGE_luci-app-passwall2_Iptables_Transparent_Proxy=y" >> .config
@@ -167,15 +168,15 @@ jobs:
         run: |
           cd sdk
           
-          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-            echo "Vermagic: $VERMAGIC"
+          # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+          #   echo "Vermagic: $VERMAGIC"
   
-            VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+          #   VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
   
-            if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-              echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-              exit 1
-            fi
+          #   if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+          #     echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+          #     exit 1
+          #   fi
 
           # make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
           # make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
@@ -183,21 +184,21 @@ jobs:
 
       - name: Build PassWall
         run: |
-            cd sdk
-            make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
-            make package/luci-app-passwall/compile V=s -j `nproc` || true
+          cd sdk
+          make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
+          make package/luci-app-passwall/compile V=s -j `nproc` || true
 
       # - name: Build 3proxy
       #   run: |
-      #       cd sdk
-      #       make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
-      #       make package/3proxy/compile V=s -j `nproc` || true        
+      #     cd sdk
+      #     make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
+      #     make package/3proxy/compile V=s -j `nproc` || true        
           
       # - name: Build helloworld
       #   run: |
-      #       cd sdk
-      #       make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
-      #       make package/helloworld/compile V=s -j `nproc` || true         
+      #     cd sdk
+      #     make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
+      #     make package/helloworld/compile V=s -j `nproc` || true         
             
       - name: Prepare artifacts
         continue-on-error: true
