@@ -165,6 +165,8 @@ jobs:
 
       - name: Build AmneziaWG
         run: |
+          cd sdk
+          
           VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
             echo "Vermagic: $VERMAGIC"
   
@@ -174,7 +176,7 @@ jobs:
               echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
               exit 1
             fi
-          cd sdk
+
           # make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
           # make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
           # make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
@@ -187,48 +189,20 @@ jobs:
 
       # - name: Build 3proxy
       #   run: |
-      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #       echo "Vermagic: $VERMAGIC"
-  
-      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #         exit 1
-      #       fi
-  
-      #       echo "current $(date)"
+      #       cd sdk
       #       make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
       #       make package/3proxy/compile V=s -j `nproc` || true        
           
       # - name: Build helloworld
       #   run: |
-      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #       echo "Vermagic: $VERMAGIC"
-  
-      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #         exit 1
-      #       fi
-  
-      #       echo "current $(date)"
+      #       cd sdk
       #       make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
       #       make package/helloworld/compile V=s -j `nproc` || true         
             
       - name: Prepare artifacts
         continue-on-error: true
         run: |
-          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-          echo "Vermagic: $VERMAGIC"
-  
-          VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-          if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-            echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-            exit 1
-          fi
+          cd sdk
 
           tag_name=${{  github.ref_name }}
           mkdir -p release
