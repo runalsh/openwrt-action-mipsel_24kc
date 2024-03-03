@@ -86,15 +86,20 @@ jobs:
 
           echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
 
-          # echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
-          # echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages" >> ./feeds.conf
+          echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
+          echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages" >> ./feeds.conf
 
           # echo "src-git 3proxy https://github.com/osnosn/3proxy-openwrt" >> ./feeds.conf
 
           # echo "src-git helloworld https://github.com/fw876/helloworld" >> ./feeds.conf
 
           # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
-                    
+
+          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+          # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
+
+          ./scripts/feeds update -a
+
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
@@ -102,39 +107,35 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
 
-          # ./scripts/feeds clean
-          ./scripts/feeds update -a
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
           ./scripts/feeds install -d n kmod-amneziawg
-          make download -j8
-          # && ./scripts/feeds install -a
 
-          # Setup config with AWG and dependencies
-          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
-          # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
+          echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_Nftables_Transparent_Proxy=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Haproxy=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Hysteria=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Server=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Simple_Obfs=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_SingBox=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_Plus=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_tuic_client=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Geodata=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Plugin=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray_Plugin=y" >> .config
 
-          # echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_Nftables_Transparent_Proxy=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Haproxy=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Hysteria=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Server=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Simple_Obfs=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_SingBox=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_Plus=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_tuic_client=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Geodata=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Plugin=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray=y" >> .config
-          # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray_Plugin=y" >> .config
+          ./scripts/feeds update passwall_packages
+          ./scripts/feeds update passwall
+          ./scripts/feeds install luci-app-passwall
 
           # echo "CONFIG_PACKAGE_luci-app-passwall2=y" >> .config
           # echo "CONFIG_PACKAGE_luci-app-passwall2_Iptables_Transparent_Proxy=y" >> .config
@@ -161,35 +162,28 @@ jobs:
           # echo "CONFIG_PACKAGE_telegram_openwrt=y" >> .config
 
           make defconfig
-      
-          # make tools/install -i -j `nproc`
-          # make toolchain/install  -i -j `nproc`
-          # make target/linux/compile  -i -j `nproc` V=s
 
       - name: Build AmneziaWG
         run: |
+          VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+            echo "Vermagic: $VERMAGIC"
+  
+            VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+  
+            if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+              echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+              exit 1
+            fi
           cd sdk
-          echo "current $(date)"
+          # make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
+          # make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
+          # make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
 
-          make package/kmod-amneziawg/{clean,compile} V=s -j `nproc`
-          make package/luci-app-amneziawg/{clean,compile} V=s -j `nproc`
-          make package/amneziawg-tools/{clean,compile} V=s  -j `nproc`
-
-      # - name: Build PassWall
-      #   run: |
-      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #       echo "Vermagic: $VERMAGIC"
-  
-      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #         exit 1
-      #       fi
-            
-      #       echo "current $(date)"
-      #       make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
-      #       make package/luci-app-passwall/compile V=s -j `nproc` || true
+      - name: Build PassWall
+        run: |
+            cd sdk
+            make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
+            make package/luci-app-passwall/compile V=s -j `nproc` || true
 
       # - name: Build 3proxy
       #   run: |
@@ -261,5 +255,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@master
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: awgrelease/*.ipk
