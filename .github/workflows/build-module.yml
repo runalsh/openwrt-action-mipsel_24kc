@@ -68,7 +68,7 @@ jobs:
 
           # echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
 
-          # echo "src-git awgopenwrt https://github.com/runalsh/openwrt-action-mipsel_24kc.git;sdk" >> ./feeds.conf
+          echo "src-git awgopenwrt https://github.com/runalsh/openwrt-action-mipsel_24kc.git;sdk" >> ./feeds.conf
 
           echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
           echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages" >> ./feeds.conf
