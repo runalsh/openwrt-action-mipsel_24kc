@@ -5,11 +5,6 @@ on:
     tags:
       - "v*.*.*"
 
-# orig https://github.com/yury-sannikov/awg-openwrt/blob/master/.github/workflows/build-module.yml
-# passwall from https://github.com/xiaorouji/openwrt-passwall/blob/main/.github/workflows/Auto%20compile%20with%20openwrt%20sdk.yml
-# 3proxy https://github.com/osnosn/3proxy-openwrt
-# helloworld https://github.com/fw876/helloworld
-
 jobs:
   job_build:
     name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
@@ -32,7 +27,6 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-          ref: 'sdk'
       
       - name: install necessary tools
         env:
@@ -47,27 +41,15 @@ jobs:
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
       
-      - name: Cache openwrt SDK
-        id: cache-sdk
-        uses: actions/cache@v4
-        with:
-          path: sdk
-          key: openwrt-luci-${{ matrix.luci_ver }}-x86_64
-
-      # - name: Cache Tools and Kernel
-      #   id: cache-tools-kernel
+      # - name: Cache openwrt SDK
+      #   id: cache-sdk
       #   uses: actions/cache@v4
-      #   env:
-      #     cache-name: "cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}"
       #   with:
-      #     path: "**"
-      #     key: ${{ runner.os }}-build-vm4-${{ env.cache-name }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-build-vm4-cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-
+      #     path: sdk
+      #     key: openwrt-luci-${{ matrix.luci_ver }}-x86_64
 
       - name: Tree form gits and configs
-        # if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
-        if: steps.cache-sdk.outputs.cache-hit != 'true'
+        # if: steps.cache-sdk.outputs.cache-hit != 'true'
         run: |
           wget ${{ matrix.sdk_url }}
           file_name=$(echo ${{ matrix.sdk_url }} | awk -F/ '{print $NF}')
@@ -108,9 +90,13 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
 
           ./scripts/feeds update awgopenwrt
+          ./scripts/feeds install -d n kmod-amneziawg
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
-          ./scripts/feeds install -d n kmod-amneziawg
+         
+          ./scripts/feeds install -a -f -p kmod-amneziawg
+          ./scripts/feeds install -a -f -p luci-app-amneziawg
+          ./scripts/feeds install -a -f -p amneziawg-tools
 
           echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
@@ -163,8 +149,6 @@ jobs:
           # echo "CONFIG_PACKAGE_telegram_openwrt=y" >> .config
 
           make defconfig
-
-          make target/linux/compile  -i -j `nproc` V=s
 
       - name: Build AmneziaWG
         continue-on-error: true
