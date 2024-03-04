@@ -91,7 +91,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
           
-          echo "CONFIG_PACKAGE_kmod-wireguard=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-wireguard=m" >> .config
           echo "CONFIG_PACKAGE_wireguard-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-proto-wireguard=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-wireguard=y" >> .config
@@ -101,10 +101,10 @@ jobs:
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
          
-          ./scripts/feeds update wireguard
           ./scripts/feeds install -d n kmod-wireguard
           ./scripts/feeds install -d n luci-app-wireguard
           ./scripts/feeds install -d n wireguard-tools
+          ./scripts/feeds install -d n luci-proto-wireguard
 
           # ./scripts/feeds install -a -f -p kmod-amneziawg
           # ./scripts/feeds install -a -f -p luci-app-amneziawg
@@ -174,7 +174,7 @@ jobs:
           make package/kmod-amneziawg/compile V=s -j `nproc`
           # make package/luci-app-amneziawg/compile V=s -j `nproc`
           # make package/amneziawg-tools/compile V=s -j `nproc`
-          
+
       # - name: Build PassWall
       #   continue-on-error: true
       #   run: |
