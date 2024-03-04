@@ -90,6 +90,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
+          # echo "CONFIG_PACKAGE_kmod-wireguard=m" >> .config
 
           ./scripts/feeds update awgopenwrt
           ./scripts/feeds install -d n kmod-amneziawg
@@ -165,8 +166,6 @@ jobs:
           # make package/luci-app-amneziawg/compile V=s -j `nproc`
           # make package/amneziawg-tools/compile V=s -j `nproc`
           
-          ls -la bin/targets/x86/64/packages/ | grep kmod-amneziawg
-
       # - name: Build PassWall
       #   continue-on-error: true
       #   run: |
@@ -190,6 +189,8 @@ jobs:
         continue-on-error: true
         run: |
           cd sdk
+
+          ls -la bin/targets/x86/64/packages/ | grep kmod-amneziawg
 
           tag_name=${{  github.ref_name }}
           mkdir -p release
