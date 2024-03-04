@@ -181,7 +181,7 @@ jobs:
         id: cache-tools-kernel
         uses: tamvo0610/local-cache@v1
         with:
-          TARGET_PATH: "/root/actions-runner/_workdir"
+          TARGET_PATH: "/root/actions-runner/_workdir/openwrt-action-mipsel_24kc"
           TARGET_ACTION: echo "cache not found"
           CACHE_KEY: CACHEKEY
           CACHE_PATH: /root/actions-runner/_workdir/cache
