@@ -164,6 +164,8 @@ jobs:
 
           make defconfig
 
+          make target/linux/compile  -i -j `nproc` V=s
+
       - name: Build AmneziaWG
         continue-on-error: true
         run: |
@@ -171,7 +173,11 @@ jobs:
           make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
           make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
           make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
-
+          
+          make package/kmod-amneziawg/compile V=s -j `nproc`
+          make package/luci-app-amneziawg/compile V=s -j `nproc`
+          make package/amneziawg-tools/compile V=s -j `nproc`
+          
       - name: Build PassWall
         continue-on-error: true
         run: |
