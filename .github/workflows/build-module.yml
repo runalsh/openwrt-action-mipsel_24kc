@@ -66,7 +66,9 @@ jobs:
           # echo "src-git telephony https://git.openwrt.org/feed/telephony.git;openwrt-23.05"  >> feeds.conf
           # echo "src-git routing https://git.openwrt.org/feed/routing.git;openwrt-23.05"  >> feeds.conf
 
-          echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
+          # echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
+
+          # echo "src-git awgopenwrt https://github.com/runalsh/openwrt-action-mipsel_24kc.git;sdk" >> ./feeds.conf
 
           echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
           echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages" >> ./feeds.conf
@@ -94,9 +96,9 @@ jobs:
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
          
-          ./scripts/feeds install -a -f -p kmod-amneziawg
-          ./scripts/feeds install -a -f -p luci-app-amneziawg
-          ./scripts/feeds install -a -f -p amneziawg-tools
+          # ./scripts/feeds install -a -f -p kmod-amneziawg
+          # ./scripts/feeds install -a -f -p luci-app-amneziawg
+          # ./scripts/feeds install -a -f -p amneziawg-tools
 
           echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
