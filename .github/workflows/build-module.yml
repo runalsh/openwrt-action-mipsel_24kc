@@ -94,9 +94,9 @@ jobs:
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
          
-          ./scripts/feeds install -a -f -p kmod-amneziawg
-          ./scripts/feeds install -a -f -p luci-app-amneziawg
-          ./scripts/feeds install -a -f -p amneziawg-tools
+          # ./scripts/feeds install -a -f -p kmod-amneziawg
+          # ./scripts/feeds install -a -f -p luci-app-amneziawg
+          # ./scripts/feeds install -a -f -p amneziawg-tools
 
           echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
