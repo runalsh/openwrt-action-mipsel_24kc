@@ -156,7 +156,8 @@ jobs:
         continue-on-error: true
         run: |
           cd sdk
-          make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
+          make package/kmod-amneziawg/{clean,download} V=s -j `nproc`
+          # make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
           make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
           make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
           
