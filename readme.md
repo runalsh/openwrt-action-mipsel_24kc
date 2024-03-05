@@ -15,3 +15,7 @@ https://github.com/rtaserver/luci-app-homeproxy
 https://github.com/animegasan/luci-app-ipinfo
 
 cron form with disabled logs
+
+ww
+
+https://github.com/nosignals/openwrt-repository/blob/main/.github/workflows/autocompile.yml
