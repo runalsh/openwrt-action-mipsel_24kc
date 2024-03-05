@@ -23,3 +23,5 @@ ww
 https://github.com/nosignals/openwrt-repository/blob/main/.github/workflows/autocompile.yml
 
 luci-app-beardropper
+
+https://github.com/kiddin9/openwrt-packages
