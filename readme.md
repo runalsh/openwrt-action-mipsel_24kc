@@ -14,8 +14,12 @@ https://github.com/rtaserver/luci-app-homeproxy
 
 https://github.com/animegasan/luci-app-ipinfo
 
+luci-app-beardropper
+
 cron form with disabled logs
 
 ww
 
 https://github.com/nosignals/openwrt-repository/blob/main/.github/workflows/autocompile.yml
+
+luci-app-beardropper
