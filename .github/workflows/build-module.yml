@@ -169,8 +169,8 @@ jobs:
           cd sdk
           make package/kmod-amneziawg/{download,prepare} V=sc -j `nproc`
           # make package/kmod-amneziawg/{clean,download,prepare} V=sc -j `nproc`
-          make package/luci-app-amneziawg/{clean,download,prepare} V=sc -j `nproc`
-          make package/amneziawg-tools/{clean,download,prepare} V=sc  -j `nproc`
+          # make package/luci-app-amneziawg/{clean,download,prepare} V=sc -j `nproc`
+          # make package/amneziawg-tools/{clean,download,prepare} V=sc  -j `nproc`
           
           make package/kmod-amneziawg/compile V=sc -j `nproc`
           # make package/luci-app-amneziawg/compile V=sc -j `nproc`
