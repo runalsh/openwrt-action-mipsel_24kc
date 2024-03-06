@@ -80,7 +80,7 @@ jobs:
           # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
 
           ./scripts/feeds update -a
-          # ./scripts/feeds install -a
+          ./scripts/feeds install -a
 
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
           # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
