@@ -22,6 +22,12 @@ ww
 
 https://github.com/nosignals/openwrt-repository/blob/main/.github/workflows/autocompile.yml
 
+https://github.com/kenzok8/openwrt-packages/blob/master/README_en.md
+
+https://github.com/shidahuilang/openwrt-package
+
 luci-app-beardropper
+
+https://github.com/coolsnowwolf/openwrt
 
 https://github.com/kiddin9/openwrt-packages
