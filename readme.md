@@ -28,6 +28,8 @@ https://github.com/shidahuilang/openwrt-package
 
 luci-app-beardropper
 
+https://github.com/coolsnowwolf/lede
+
 https://github.com/coolsnowwolf/openwrt
 
 https://github.com/kiddin9/openwrt-packages
