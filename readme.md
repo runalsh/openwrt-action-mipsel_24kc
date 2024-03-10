@@ -19,6 +19,7 @@ luci-app-beardropper
 cron with disabled logs
 
 src-link Nmon https://sourceforge.net/projects/nmon/files
+or https://github.com/sameershaik/openwrt_nmon/tree/9199aebeae3f7379bc1eeee264a6aefd37838e56/package/utils/Nmon
 
 ww
 
