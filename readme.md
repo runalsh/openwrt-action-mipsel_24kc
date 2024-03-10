@@ -16,7 +16,9 @@ https://github.com/animegasan/luci-app-ipinfo
 
 luci-app-beardropper
 
-cron form with disabled logs
+cron with disabled logs
+
+src-link Nmon https://sourceforge.net/projects/nmon/files
 
 ww
 
