@@ -38,3 +38,5 @@ https://github.com/coolsnowwolf/openwrt
 https://github.com/kiddin9/openwrt-packages
 
 https://github.com/brvphoenix/luci-app-wrtbwmon/blob/master/.github/workflows/CI.yml
+
+https://github.com/fantastic-packages/packages/blob/master/.github/workflows/compile.yml  sdk with docker
