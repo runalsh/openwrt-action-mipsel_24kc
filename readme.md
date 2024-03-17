@@ -2,6 +2,11 @@ github action for compiling ipks mipsel-24kc
 
 plans:
 
+https://github.com/sameershaik/openwrt_nmon (src-link Nmon https://sourceforge.net/projects/nmon/files/ 16
+and then run the below commands
+./scripts/feeds/update -a
+./scripts/feeds/install -a
+
 https://github.com/lisaac/luci-app-dockerman/tree/master/applications/luci-app-dockerman
 
 https://github.com/lisaac/luci-app-diskman/tree/master/applications/luci-app-diskman
