@@ -48,7 +48,7 @@ jobs:
         with:
           path: |
             /
-          key: cache-${{ hashFiles('Makefile') }}
+          key: cache-${{ hashFiles('readme.md') }}
           storage: /root/gh-cache
 
     #   - name: Local cache for API dependencies
