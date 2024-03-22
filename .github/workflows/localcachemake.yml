@@ -34,13 +34,22 @@ jobs:
       - name: runrunrun
         run: |
             ls -la
-      - name: Cache nipeharefa/gh-actions-local-cache
-        uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
+      # - name: Cache nipeharefa/gh-actions-local-cache
+      #   uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
+      #   with:
+      #     path: |
+      #       ./
+      #     key: openwrt-cache
+      #     storage: /root/openwrt-cache
+
+      - name: Cache dependencies
+        id: cache
+        uses: corca-ai/local-cache@v2
         with:
-          path: |
-            ./
-          key: openwrt-cache
-          storage: /root/openwrt-cache
+          path: ./
+          key: openwrt
+          base: /root/cache
+
       - name: runrunrun
         run: |
             ls -la
