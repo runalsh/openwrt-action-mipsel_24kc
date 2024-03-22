@@ -29,10 +29,6 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
-      - name: Clean Workflow Action
-        uses: igorjs/gh-actions-clean-workflow@v4
-  
-  
       - name: Cache nipeharefa/gh-actions-local-cache
         uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
         with:
@@ -63,16 +59,16 @@ jobs:
       - name: test MasterworksIO/action-local-cache
         run: ls -la
         if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
-      # - name: Checkout openwrt
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: openwrt/openwrt
-      #     ref: v${{ matrix.build_env.tag }}
-      #     fetch-depth: 1
-      #     clean: 'false'
       - name: Checkout openwrt
-        run: |    
-          git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git .
+        uses: actions/checkout@v4
+        with:
+          repository: openwrt/openwrt
+          ref: v${{ matrix.build_env.tag }}
+          fetch-depth: 1
+          clean: 'false'
+      # - name: Checkout openwrt
+      #   run: |    
+      #     git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git .
       - name: Checkout openwrt
         run: |    
           git pull --force
