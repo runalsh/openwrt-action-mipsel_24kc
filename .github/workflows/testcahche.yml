@@ -44,7 +44,7 @@ jobs:
           key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
 
       - name: Install dependencies
-        run: npm install
+        run: ls -la
         if: steps.openwrt-cache.outputs.cache-hit != 'true'
 
       - name: Checkout openwrt
