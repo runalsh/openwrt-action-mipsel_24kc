@@ -42,6 +42,7 @@ jobs:
         with:
           path: './'
           key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
+          strategy: copy-immutable
 
       - name: Install dependencies
         run: ls -la
@@ -54,7 +55,7 @@ jobs:
           ref: v${{ matrix.build_env.tag }}
           fetch-depth: 0
 
-      - name: Tree form gits and configs
+      - name: build
         run: |
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
