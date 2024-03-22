@@ -27,6 +27,7 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
+      - uses: AutoModality/action-clean@v1
       - name: Cache nipeharefa/gh-actions-local-cache
         uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
         with:
