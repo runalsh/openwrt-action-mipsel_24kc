@@ -72,9 +72,9 @@ jobs:
       # - name: Checkout openwrt
       #   run: |    
       #     git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git .
-      # - name: Checkout openwrt
-      #   run: |    
-      #     git pull --force
+      - name: Checkout openwrt
+        run: |    
+          git pull
       # - name: configs and feeds
       #   run: |
       #     wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
@@ -90,8 +90,8 @@ jobs:
       # - name: build linux
       #   run: |    
       #     make target/linux/compile  -i -j `nproc`
-      # - name: runrunrun
-      #   run: |
-      #       ls -la
+      - name: runrunrun
+        run: |
+            ls -la
 
  
