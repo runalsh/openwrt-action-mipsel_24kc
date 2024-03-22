@@ -62,10 +62,11 @@ jobs:
       #   with:
       #     repository: openwrt/openwrt
       #     ref: v${{ matrix.build_env.tag }}
-      #     fetch-depth: 0
+      #     fetch-depth: 1
+      #     clean: 'false'
       - name: Checkout openwrt
         run: |    
-          git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git
+          git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git .
       - name: Checkout openwrt
         run: |    
           git pull --force
