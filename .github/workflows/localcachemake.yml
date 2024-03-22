@@ -51,7 +51,12 @@ jobs:
           key: ${{ runner.os }}-build-vm4-${{ env.cache-name }}
           restore-keys: |
             ${{ runner.os }}-build-vm4-cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-
+      - name: test actions/cache@v4
+        run: ls -la
         if: steps.openwrt-cache.outputs.cache-hit != 'true'
+      - name: test MasterworksIO/action-local-cache
+        run: ls -la
+        if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
       - name: Checkout openwrt
         uses: actions/checkout@v4
         with:
