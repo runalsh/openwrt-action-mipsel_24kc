@@ -9,17 +9,17 @@ PKG_MAINTAINER:=sameeruddin shaik <sameeruddin.shaik8@gmail.com>
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 PKG_SOURCE:=lmon$(PKG_VERSION).c
-URL:=https://sourceforge.net/projects/nmon/files/
-FILES:=$(PKG_BUILD_DIR)/$(PKG_SOURCE)
+
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/Nmon
- SECTION:=utils
- CATEGORY:=Utilities
- TITLE:=Nmon linux performance monitoring tool
- DEPENDS:=+libncurses 
- URL:=https://sourceforge.net/projects/nmon/
+	SECTION:=utils
+	CATEGORY:=Utilities
+	TITLE:=Nmon linux performance monitoring tool
+	DEPENDS:=+libncurses 
+	URL:=https://sourceforge.net/projects/nmon/
+	FILES:=$(PKG_BUILD_DIR)/$(PKG_SOURCE)
 endef
 
 TARGET_LDFLAGS+= -lncurses
