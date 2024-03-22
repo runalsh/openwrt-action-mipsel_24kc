@@ -27,44 +27,44 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
-
-      - name: Cache
-        uses: nipeharefa/gh-actions-local-cache@main
+      - name: Cache nipeharefa/gh-actions-local-cache
+        uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
         with:
           path: |
             ./
           key: openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
           storage: /root/openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
-
-      - name: Local cache for API dependencies
+      - name: Cache MasterworksIO/action-local-cache
         id: openwrt-cache
-        uses: MasterworksIO/action-local-cache@2
+        uses: MasterworksIO/action-local-cache@2 # https://github.com/MasterworksIO/action-local-cache
         with:
           path: './'
           key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
           strategy: copy-immutable
-
-      - name: Install dependencies
+      - name: test
         run: ls -la
         if: steps.openwrt-cache.outputs.cache-hit != 'true'
-
       - name: Checkout openwrt
         uses: actions/checkout@v4
         with:
           repository: openwrt/openwrt
           ref: v${{ matrix.build_env.tag }}
           fetch-depth: 0
-
-      - name: build
+      - name: configs and feeds
         run: |
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
           ./scripts/feeds update -a && ./scripts/feeds install -a
           make defconfig
+      - name: tools build
+        run: |    
           make tools/install -i -j `nproc` V=sc
+      - name: build toolchain
+        run: |
           make toolchain/install  -i -j `nproc` V=sc
+      - name: build linux
+        run: |    
           make target/linux/compile  -i -j `nproc` V=sc
-
       - name: runrunrun
         run: |
             ls -la
