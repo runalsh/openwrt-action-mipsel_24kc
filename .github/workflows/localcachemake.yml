@@ -40,7 +40,7 @@ jobs:
         with:
           path: './'
           key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
-          strategy: copy-immutable
+          # strategy: copy-immutable
       - name: Cache actions/cache
         id: cache-tools-kernel
         uses: actions/cache@v4
@@ -57,12 +57,15 @@ jobs:
       - name: test MasterworksIO/action-local-cache
         run: ls -la
         if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+      # - name: Checkout openwrt
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: openwrt/openwrt
+      #     ref: v${{ matrix.build_env.tag }}
+      #     fetch-depth: 0
       - name: Checkout openwrt
-        uses: actions/checkout@v4
-        with:
-          repository: openwrt/openwrt
-          ref: v${{ matrix.build_env.tag }}
-          fetch-depth: 0
+        run: |    
+          git pull --depth=0 --force tag v${{ matrix.build_env.tag }} openwrt/openwrt
       - name: configs and feeds
         run: |
           wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
