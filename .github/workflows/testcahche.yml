@@ -52,7 +52,6 @@ jobs:
           storage: /root/gh-cache
 
       - run: |
-          ls -la /root/gh-cache
           ls -la
 
     #   - name: Local cache for API dependencies
