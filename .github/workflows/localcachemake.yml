@@ -39,13 +39,13 @@ jobs:
             ./
           key: openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
           storage: /root/openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
-      - name: Cache MasterworksIO/action-local-cache
-        id: openwrt-cache
-        uses: MasterworksIO/action-local-cache@2 # https://github.com/MasterworksIO/action-local-cache
-        with:
-          path: './'
-          key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
-          # strategy: copy-immutable
+      # - name: Cache MasterworksIO/action-local-cache
+      #   id: openwrt-cache
+      #   uses: MasterworksIO/action-local-cache@2 # https://github.com/MasterworksIO/action-local-cache
+      #   with:
+      #     path: './'
+      #     key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
+      #     # strategy: copy-immutable
       - name: Cache actions/cache
         id: cache-tools-kernel
         uses: actions/cache@v4
