@@ -12,6 +12,8 @@ jobs:
     name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
     runs-on: [self-hosted, ubuntu]
     # runs-on: ubuntu-latest
+    permissions:
+      actions: write
     strategy:
       matrix:
         build_env:
