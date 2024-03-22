@@ -65,10 +65,10 @@ jobs:
       #     fetch-depth: 0
       - name: Checkout openwrt
         run: |    
-          git clone --depth=0 tag v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git
+          git clone --depth 0 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git
       - name: Checkout openwrt
         run: |    
-          git pull --depth=0 --force tag v${{ matrix.build_env.tag }} openwrt/openwrt
+          git pull --force openwrt/openwrt
       # - name: configs and feeds
       #   run: |
       #     wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
