@@ -47,7 +47,7 @@ jobs:
         uses: nipeharefa/gh-actions-local-cache@main
         with:
           path: |
-            openwrt
+            amneziawg-openwrt
           key: cache-${{ hashFiles('readme.md') }}
           storage: /root/gh-cache
 
