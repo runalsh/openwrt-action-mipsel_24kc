@@ -85,9 +85,9 @@ jobs:
           # echo "src-git telephony https://git.openwrt.org/feed/telephony.git;openwrt-23.05"  >> feeds.conf
           # echo "src-git routing https://git.openwrt.org/feed/routing.git;openwrt-23.05"  >> feeds.conf
 
-          echo "src-git awgopenwrt https://github.com/runalsh/openwrt-action-mipsel_24kc.git" >> ./feeds.conf
+          echo "src-git runalsh https://github.com/runalsh/openwrt-action-mipsel_24kc.git" >> ./feeds.conf
           
-          #echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
+          #echo "src-git runalsh https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
           #;a3294d150a664736722ca4d4e9b5301bc130e7b4
 
           # echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
@@ -296,8 +296,8 @@ jobs:
           tag_name=${{  github.ref_name }}
           mkdir -p awgrelease
           postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
-          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/amneziawg-tools_*.ipk awgrelease/amneziawg-tools_${postfix}.ipk
-          cp bin/packages/${{ matrix.build_env.pkgarch }}/awgopenwrt/luci-app-amneziawg_*.ipk awgrelease/luci-app-amneziawg_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/runalsh/amneziawg-tools_*.ipk awgrelease/amneziawg-tools_${postfix}.ipk
+          cp bin/packages/${{ matrix.build_env.pkgarch }}/runalsh/luci-app-amneziawg_*.ipk awgrelease/luci-app-amneziawg_${postfix}.ipk
           cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk awgrelease/kmod-amneziawg_${postfix}.ipk
 
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall/*.ipk release/
