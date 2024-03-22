@@ -30,29 +30,26 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: openwrt/openwrt
-          ref: v${{ matrix.build_env.tag }}
-          fetch-depth: 0
-    
-      - name: runrunrun
-        run: |
-            ls -la
+    #   - uses: actions/checkout@v4
+    #     with:
+    #       repository: openwrt/openwrt
+    #       ref: v${{ matrix.build_env.tag }}
+    #       fetch-depth: 0
 
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: runrunrun
+        run: |
+            ls -la
 
       - name: Cache
         uses: nipeharefa/gh-actions-local-cache@main
         with:
           path: |
-            openwrt
+            /
           key: cache-${{ hashFiles('Makefile') }}
           storage: /root/gh-cache
-
-      - run: |
-          ls -la
 
     #   - name: Local cache for API dependencies
     #     id: api-cache
