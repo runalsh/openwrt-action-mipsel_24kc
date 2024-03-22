@@ -1,9 +1,6 @@
 name: cache test
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "v*.*.*"
 
 # orig https://github.com/yury-sannikov/awg-openwrt/blob/master/.github/workflows/build-module.yml
 # passwall from https://github.com/xiaorouji/openwrt-passwall/blob/main/.github/workflows/Auto%20compile%20with%20openwrt%20sdk.yml
@@ -30,16 +27,25 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
       - name: Cache
         uses: nipeharefa/gh-actions-local-cache@main
         with:
           path: |
             ./
-          key: cache-${{ hashFiles('cache-for-action') }}
-          storage: /root/gh-cache
+          key: openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
+          storage: /root/openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
+
+      - name: Local cache for API dependencies
+        id: openwrt-cache
+        uses: MasterworksIO/action-local-cache@2
+        with:
+          path: './'
+          key: 'openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}'
+
+      - name: Install dependencies
+        run: npm install
+        if: steps.openwrt-cache.outputs.cache-hit != 'true'
 
       - name: Checkout openwrt
         uses: actions/checkout@v4
@@ -48,16 +54,15 @@ jobs:
           ref: v${{ matrix.build_env.tag }}
           fetch-depth: 0
 
-    #   - name: Tree form gits and configs
-    #     run: |
-    #       # Setup & install feeds
-    #       wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
-    #       ./scripts/feeds update -a && ./scripts/feeds install -a
-    #       wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
-    #       make defconfig
-    #       make tools/install -i -j `nproc`
-    #       make toolchain/install  -i -j `nproc`
-    #       make target/linux/compile  -i -j `nproc` V=s
+      - name: Tree form gits and configs
+        run: |
+          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
+          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+          ./scripts/feeds update -a && ./scripts/feeds install -a
+          make defconfig
+          make tools/install -i -j `nproc` V=sc
+          make toolchain/install  -i -j `nproc` V=sc
+          make target/linux/compile  -i -j `nproc` V=sc
 
       - name: runrunrun
         run: |
