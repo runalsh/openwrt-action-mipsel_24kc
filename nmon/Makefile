@@ -9,8 +9,8 @@ PKG_MAINTAINER:=sameeruddin shaik <sameeruddin.shaik8@gmail.com>
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 PKG_SOURCE:=lmon$(PKG_VERSION).c
-PKG_SOURCE_URL:=https://sourceforge.net/projects/nmon/files/
-PKG_HASH:=5dc6045f6725e3249a969918fae69663a1d669162087720babcdb90fce9e6b2a
+URL:=https://sourceforge.net/projects/nmon/files/
+FILES:=$(PKG_BUILD_DIR)/$(PKG_SOURCE)
 
 include $(INCLUDE_DIR)/package.mk
 
