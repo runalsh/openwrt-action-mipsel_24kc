@@ -48,16 +48,16 @@ jobs:
           ref: v${{ matrix.build_env.tag }}
           fetch-depth: 0
 
-      - name: Tree form gits and configs
-        run: |
-          # Setup & install feeds
-          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
-          ./scripts/feeds update -a && ./scripts/feeds install -a
-          wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
-          make defconfig
-          make tools/install -i -j `nproc`
-          make toolchain/install  -i -j `nproc`
-          make target/linux/compile  -i -j `nproc` V=s
+    #   - name: Tree form gits and configs
+    #     run: |
+    #       # Setup & install feeds
+    #       wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
+    #       ./scripts/feeds update -a && ./scripts/feeds install -a
+    #       wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+    #       make defconfig
+    #       make tools/install -i -j `nproc`
+    #       make toolchain/install  -i -j `nproc`
+    #       make target/linux/compile  -i -j `nproc` V=s
 
       - name: runrunrun
         run: |
