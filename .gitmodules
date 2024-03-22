@@ -1,1 +1,4 @@
  
+[submodule "amneziawg-openwrt"]
+	path = amneziawg-openwrt
+	url = https://github.com/amnezia-vpn/amneziawg-openwrt.git
