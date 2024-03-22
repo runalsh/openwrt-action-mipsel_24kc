@@ -42,13 +42,13 @@ jobs:
       #     key: openwrt-cache
       #     storage: /root/openwrt-cache
 
-      - name: Cache dependencies
-        id: cache
-        uses: corca-ai/local-cache@v2
+      - name: Cache Primes
+        id: cache-primes
+        uses: khj809/github-action-cache-local-fs@v1
         with:
           path: ./
-          key: openwrt
-          base: /root/cache
+          key: ${{ runner.os }}-primes
+          cache-base-path: /root/cache  
 
       - name: runrunrun
         run: |
