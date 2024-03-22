@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sslh2
-PKG_VERSION:=v2.01
+PKG_VERSION:=v2.1.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=sslh-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://rutschle.net/tech/sslh/
-PKG_HASH:=d88d43ee11cf1324983c196c894b41766c33d957b6af53b62c8479703bbbd26c
+PKG_HASH:=0006304163948d9e1fd634ae600aeab99bf6a098c128580cd674550ebf6e0db2
 
 PKG_MAINTAINER:=Jonathan McCrohan <jmccrohan@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later

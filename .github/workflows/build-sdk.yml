@@ -88,6 +88,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
+          echo "CONFIG_PACKAGE_luci-proto-amneziawg=y" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
@@ -99,6 +100,7 @@ jobs:
 
           ./scripts/feeds update awgopenwrt
           ./scripts/feeds install -d n kmod-amneziawg
+          ./scripts/feeds install -d n luci-proto-amneziawg
           ./scripts/feeds install -d n luci-app-amneziawg
           ./scripts/feeds install -d n amneziawg-tools
          
@@ -109,6 +111,7 @@ jobs:
 
           # ./scripts/feeds install -a -f -p kmod-amneziawg
           # ./scripts/feeds install -a -f -p luci-app-amneziawg
+          # ./scripts/feeds install -a -f -p luci-proto-amneziawg
           # ./scripts/feeds install -a -f -p amneziawg-tools
 
           # echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
@@ -168,13 +171,14 @@ jobs:
         run: |
           cd sdk
           make package/kmod-amneziawg/{download,prepare} V=sc -j `nproc`
-          # make package/kmod-amneziawg/{clean,download,prepare} V=sc -j `nproc`
-          # make package/luci-app-amneziawg/{clean,download,prepare} V=sc -j `nproc`
-          # make package/amneziawg-tools/{clean,download,prepare} V=sc  -j `nproc`
+          make package/luci-proto-amneziawg/{clean,download,prepare} V=sc -j `nproc`
+          make package/luci-app-amneziawg/{clean,download,prepare} V=sc -j `nproc`
+          make package/amneziawg-tools/{clean,download,prepare} V=sc  -j `nproc`
           
           make package/kmod-amneziawg/compile V=sc -j `nproc`
-          # make package/luci-app-amneziawg/compile V=sc -j `nproc`
-          # make package/amneziawg-tools/compile V=sc -j `nproc`
+          make package/luci-proto-amneziawg/compile V=sc -j `nproc`
+          make package/luci-app-amneziawg/compile V=sc -j `nproc`
+          make package/amneziawg-tools/compile V=sc -j `nproc`
 
       # - name: Build PassWall
       #   continue-on-error: true
