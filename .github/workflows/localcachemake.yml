@@ -71,13 +71,13 @@ jobs:
           make defconfig
       - name: tools build
         run: |    
-          make tools/install -i -j `nproc` V=sc
+          make tools/install -i -j `nproc`
       - name: build toolchain
         run: |
-          make toolchain/install  -i -j `nproc` V=sc
+          make toolchain/install  -i -j `nproc`
       - name: build linux
         run: |    
-          make target/linux/compile  -i -j `nproc` V=sc
+          make target/linux/compile  -i -j `nproc`
       - name: runrunrun
         run: |
             ls -la
