@@ -30,11 +30,11 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
-    #   - uses: actions/checkout@v4
-    #     with:
-    #       repository: openwrt/openwrt
-    #       ref: v${{ matrix.build_env.tag }}
-    #       fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: openwrt/openwrt
+          ref: v${{ matrix.build_env.tag }}
+          fetch-depth: 0
     
       - name: runrunrun
         run: |
@@ -47,8 +47,8 @@ jobs:
         uses: nipeharefa/gh-actions-local-cache@main
         with:
           path: |
-            amneziawg-openwrt
-          key: cache-${{ hashFiles('readme.md') }}
+            openwrt
+          key: cache-${{ hashFiles('Makefile') }}
           storage: /root/gh-cache
 
       - run: |
