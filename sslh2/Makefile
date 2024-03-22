@@ -18,20 +18,20 @@ PKG_HASH:=0006304163948d9e1fd634ae600aeab99bf6a098c128580cd674550ebf6e0db2
 PKG_MAINTAINER:=Jonathan McCrohan <jmccrohan@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later
 PKG_LICENSE_FILES:=COPYING
-PKG_CPE_ID:=cpe:/a:sslh_project:sslh
+PKG_CPE_ID:=cpe:/a:sslh2_project:sslh2
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/sslh
+define Package/sslh2
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=Routing and Redirection
-  TITLE:=SSL/SSH multiplexer
+  TITLE:=SSL/SSH multiplexer 2
   DEPENDS:=+libconfig +libcap +libpcre2
   URL:=https://rutschle.net/tech/sslh/README.html
 endef
 
-define Package/sslh/config
+define Package/sslh2/config
     config SSLH_SELECT
         bool "Use sslh-select"
         depends on PACKAGE_sslh
@@ -40,7 +40,7 @@ define Package/sslh/config
         default n
 endef
 
-define Package/sslh/conffiles
+define Package/sslh2/conffiles
 /etc/config/sslh
 /etc/sslh.conf
 endef
@@ -48,7 +48,7 @@ endef
 MAKE_FLAGS += \
   USELIBCAP=1
 
-define Package/sslh/install
+define Package/sslh2/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 ifeq ($(CONFIG_SSLH_SELECT),y)
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sslh-select $(1)/usr/sbin/sslh
@@ -62,4 +62,4 @@ endif
 	$(INSTALL_CONF) $(PKG_BUILD_DIR)/basic.cfg $(1)/etc/sslh.conf
 endef
 
-$(eval $(call BuildPackage,sslh))
+$(eval $(call BuildPackage,sslh2))

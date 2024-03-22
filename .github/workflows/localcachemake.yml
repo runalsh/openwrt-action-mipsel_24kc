@@ -34,14 +34,29 @@ jobs:
       - name: runrunrun
         run: |
             ls -ls
-      - name: Cache Primes
-        id: cache-primes
+      - name: Restore cache openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
+        id: openwrt-cache
         uses: khj809/github-action-cache-local-fs@v1
         with:
           path: ./
           key: openwrt-cache-${{ matrix.build_env.tag }}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}
           cache-base-path: /root/action-cache
-      - name: runrunrun
+      # - name: Cache Tools and Kernel actions/cache@v4
+      #   id: cache-tools-kernel
+      #   uses: actions/cache@v4
+      #   env:
+      #     cache-name: "cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}"
+      #   with:
+      #     path: "**"
+      #     key: ${{ runner.os }}-build-vm4-${{ env.cache-name }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-vm4-cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-    
+      # - name: runrunrun actions/cache@v4
+      #   if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+      #   run: |
+      #       ls -la
+      - name: runrunrun khj809/github-action-cache-local-fs@v1
+        if: steps.openwrt-cache.outputs.cache-hit != 'true'
         run: |
             ls -la
       - name: Checkout openwrt
