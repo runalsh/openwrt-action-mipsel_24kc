@@ -88,6 +88,71 @@ jobs:
 
           # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
 
+
+          ####### https://github.com/sbwml/openwrt-curl-prebuilt/blob/main/.github/workflows/build-packages.yml
+          # mv packages/net/curl curl
+          # rm -rf packages
+          # # enable openssl & nghttp3 & ngtcp2
+          # sed -i 's/default LIBCURL_MBEDTLS/default LIBCURL_OPENSSL/g' curl/Config.in
+          # sed -i -E '/LIBCURL_NG(HTTP3|TCP2)/,/default n/s/default n/default y/' curl/Config.in
+          # # version
+          # curl_version=$(grep -Po '(?<=PKG_VERSION:=).*' curl/Makefile)
+          # echo "curl_version=$curl_version" >> "$GITHUB_ENV"
+          # # depends
+          # git clone https://github.com/sbwml/package_libs_ngtcp2 ngtcp2
+          # git clone https://github.com/sbwml/package_libs_nghttp3 nghttp3
+          # # openssl quic
+          # git clone https://github.com/openwrt/openwrt -b openwrt-23.05 --depth=1
+          # cp -a openwrt/package/libs/openssl openssl
+          # rm -rf openwrt
+          # mirror="raw.githubusercontent.com/sbwml/r4s_build_script/master"
+          # pushd openssl/patches
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0001-QUIC-Add-support-for-BoringSSL-QUIC-APIs.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0002-QUIC-New-method-to-get-QUIC-secret-length.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0003-QUIC-Make-temp-secret-names-less-confusing.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0004-QUIC-Move-QUIC-transport-params-to-encrypted-extensi.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0005-QUIC-Use-proper-secrets-for-handshake.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0006-QUIC-Handle-partial-handshake-messages.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0007-QUIC-Fix-quic_transport-constructors-parsers.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0008-QUIC-Reset-init-state-in-SSL_process_quic_post_hands.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0009-QUIC-Don-t-process-an-incomplete-message.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0010-QUIC-Quick-fix-s2c-to-c2s-for-early-secret.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0011-QUIC-Add-client-early-traffic-secret-storage.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0012-QUIC-Add-OPENSSL_NO_QUIC-wrapper.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0013-QUIC-Correctly-disable-middlebox-compat.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0014-QUIC-Move-QUIC-code-out-of-tls13_change_cipher_state.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0015-QUIC-Tweeks-to-quic_change_cipher_state.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0016-QUIC-Add-support-for-more-secrets.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0017-QUIC-Fix-resumption-secret.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0018-QUIC-Handle-EndOfEarlyData-and-MaxEarlyData.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0019-QUIC-Fall-through-for-0RTT.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0020-QUIC-Some-cleanup-for-the-main-QUIC-changes.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0021-QUIC-Prevent-KeyUpdate-for-QUIC.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0022-QUIC-Test-KeyUpdate-rejection.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0023-QUIC-Buffer-all-provided-quic-data.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0024-QUIC-Enforce-consistent-encryption-level-for-handsha.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0025-QUIC-add-v1-quic_transport_parameters.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0026-QUIC-return-success-when-no-post-handshake-data.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0027-QUIC-__owur-makes-no-sense-for-void-return-values.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0028-QUIC-remove-SSL_R_BAD_DATA_LENGTH-unused.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0029-QUIC-SSLerr-ERR_raise-ERR_LIB_SSL.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0030-QUIC-Add-compile-run-time-checking-for-QUIC.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0031-QUIC-Add-early-data-support.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0032-QUIC-Make-SSL_provide_quic_data-accept-0-length-data.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0033-QUIC-Process-multiple-post-handshake-messages-in-a-s.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0034-QUIC-Fix-CI.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0035-QUIC-Break-up-header-body-processing.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0036-QUIC-Don-t-muck-with-FIPS-checksums.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0037-QUIC-Update-RFC-references.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0038-QUIC-revert-white-space-change.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0039-QUIC-use-SSL_IS_QUIC-in-more-places.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0040-QUIC-Error-when-non-empty-session_id-in-CH.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0041-QUIC-Update-SSL_clear-to-clear-quic-data.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0042-QUIC-Better-SSL_clear.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0043-QUIC-Fix-extension-test.patch
+          #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0044-QUIC-Update-metadata-version.patch
+          # popd
+
           # ./scripts/feeds clean
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
@@ -154,6 +219,18 @@ jobs:
 
           # echo "CONFIG_PACKAGE_nmon=y" >> .config
 
+          # CONFIG_LIBCURL_COOKIES=y
+          # CONFIG_LIBCURL_FILE=y
+          # CONFIG_LIBCURL_FTP=y
+          # CONFIG_LIBCURL_HTTP=y
+          # CONFIG_LIBCURL_NGHTTP2=y
+          # CONFIG_LIBCURL_NGHTTP3=y
+          # CONFIG_LIBCURL_NGTCP2=y
+          # CONFIG_LIBCURL_NO_SMB="!"
+          # CONFIG_LIBCURL_OPENSSL=y
+          # CONFIG_LIBCURL_PROXY=y
+          # CONFIG_LIBCURL_UNIX_SOCKETS=y
+
           make defconfig
 
           # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
@@ -186,14 +263,6 @@ jobs:
       #     echo "    > make target/linux/compile"
       #     make target/linux/compile  -i -j `nproc` V=s
 
-      #     # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #     # VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-
-      #     # if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #     #   echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #     #   exit 1
-      #     # fi
-
       - name: Build AmneziaWG
         run: |
           # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
@@ -222,48 +291,18 @@ jobs:
 
       # - name: Build PassWall
       #   run: |
-      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #       echo "Vermagic: $VERMAGIC"
-  
-      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #         exit 1
-      #       fi
-            
       #       echo "current $(date)"
       #       make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
       #       make package/luci-app-passwall/compile V=s -j `nproc` || true
 
       # - name: Build 3proxy
       #   run: |
-      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #       echo "Vermagic: $VERMAGIC"
-  
-      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #         exit 1
-      #       fi
-  
       #       echo "current $(date)"
       #       make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
       #       make package/3proxy/compile V=s -j `nproc` || true        
           
       # - name: Build helloworld
       #   run: |
-      #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
-      #       echo "Vermagic: $VERMAGIC"
-  
-      #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
-  
-      #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
-      #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
-      #         exit 1
-      #       fi
-  
       #       echo "current $(date)"
       #       make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
       #       make package/helloworld/compile V=s -j `nproc` || true         
@@ -291,8 +330,6 @@ jobs:
 
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/telegram_openwrt/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/telegram_openwrt/*.ipk release/
-
-
 
       - name: Release
         uses: softprops/action-gh-release@v1
