@@ -1,47 +1,45 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=Nmon
-PKG_VERSION:=16c
+PKG_NAME:=nmon
+PKG_VERSION:=16p
 PKG_RELEASE:=1.0
 
 PKG_LICENSE:=GPL-3.0
-PKG_MAINTAINER:=sameeruddin shaik <sameeruddin.shaik8@gmail.com>
-
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
-PKG_SOURCE:=lmon$(PKG_VERSION).c
-
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/Nmon
+define Package/nmon
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Nmon linux performance monitoring tool
-	DEPENDS:=+libncurses 
+	MAINTAINER:=sameeruddin shaik <sameeruddin.shaik8@gmail.com>
+	DEPENDS:=+libncurses
 	URL:=https://sourceforge.net/projects/nmon/
-	FILES:=$(PKG_BUILD_DIR)/$(PKG_SOURCE)
+	FILES:=$(PKG_BUILD_DIR)/lmon16p.c
 endef
 
 TARGET_LDFLAGS+= -lncurses
 
-define Package/Nmon/description
+define Package/nmon/description
  nmon is short for Nigel\'s Performance Monitor It either shows you the stats on-screen updating once a second or saves the data to a CSV file for later analysis and graphing.
 endef
  
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) $(TOPDIR)/dl/$(PKG_SOURCE) $(PKG_BUILD_DIR)/
-	$(CP) -fpR patches/ $(PKG_BUILD_DIR)/
-	cd $(PKG_BUILD_DIR)/; quilt push -a
+	cp -fpR lmon16p.c $(PKG_BUILD_DIR)/
+	for patch in `ls patches/*`; do \
+		patch -d $(PKG_BUILD_DIR)/ -F3 -t -p0 -i "$$$$(pwd)/$$$${patch}"; \
+	done
+	cp -f Makefile $(PKG_BUILD_DIR)
 endef
 
 define Build/Compile
-	$(TARGET_CC) $(TARGET_CPPFLAGS) $(TARGET_CFLAGS)  -o $(PKG_BUILD_DIR)/nmon  $(PKG_BUILD_DIR)/lmon16j.c $(TARGET_LDFLAGS)
+	$(TARGET_CC) $(TARGET_CPPFLAGS) $(TARGET_CFLAGS)  -o $(PKG_BUILD_DIR)/nmon  $(PKG_BUILD_DIR)/lmon16p.c $(TARGET_LDFLAGS)
 endef
 
-define Package/Nmon/install
+define Package/nmon/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nmon $(1)/usr/sbin/nmon
 endef
 
-$(eval $(call BuildPackage,Nmon))
+$(eval $(call BuildPackage,nmon))

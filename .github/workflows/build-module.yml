@@ -307,12 +307,12 @@ jobs:
       #       make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
       #       make package/helloworld/compile V=s -j `nproc` || true         
       
-      make package/nmon/{clean,download,prepare} V=s -j `nproc` || true
-      make package/nmon/compile V=s -j `nproc` || true     
-      make package/stunnel/{clean,download,prepare} V=s -j `nproc` || true
-      make package/stunnel/compile V=s -j `nproc` || true     
-      make package/sslh2/{clean,download,prepare} V=s -j `nproc` || true
-      make package/sslh2/compile V=s -j `nproc` || true     
+      # make package/nmon/{clean,download,prepare} V=s -j `nproc` || true
+      # make package/nmon/compile V=s -j `nproc` || true     
+      # make package/stunnel/{clean,download,prepare} V=s -j `nproc` || true
+      # make package/stunnel/compile V=s -j `nproc` || true     
+      # make package/sslh2/{clean,download,prepare} V=s -j `nproc` || true
+      # make package/sslh2/compile V=s -j `nproc` || true     
 
 
 

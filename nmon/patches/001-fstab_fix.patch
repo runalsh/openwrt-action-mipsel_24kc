@@ -1,7 +1,7 @@
-Index: Nmon/lmon16p.c
+Index: lmon16p.c
 ===================================================================
---- Nmon.orig/lmon16p.c
-+++ Nmon/lmon16p.c
+--- lmon16p.c
++++ lmon16p.c
 @@ -583,7 +583,7 @@ struct procsinfo {
  int isroot = 0;
  
