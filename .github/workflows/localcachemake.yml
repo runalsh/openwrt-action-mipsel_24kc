@@ -1,4 +1,4 @@
-name: update build cache
+name: update build cache (local)
 on:
   workflow_dispatch:
 
