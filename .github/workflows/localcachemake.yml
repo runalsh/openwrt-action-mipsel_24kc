@@ -65,7 +65,7 @@ jobs:
       #     fetch-depth: 0
       - name: Checkout openwrt
         run: |    
-          git clone --depth 0 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git
+          git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git
       - name: Checkout openwrt
         run: |    
           git pull --force openwrt/openwrt
