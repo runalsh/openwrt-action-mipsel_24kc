@@ -29,9 +29,9 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
-      - name: clean
-        run: |
-          rm -rf ./
+      - name: Clean runner workspace directory
+        uses: bhargavms/action-clean-runner-workspace@1.0
+  
       - name: Cache nipeharefa/gh-actions-local-cache
         uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
         with:
