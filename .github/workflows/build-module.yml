@@ -292,8 +292,10 @@ jobs:
           # cp bin/packages/${{ matrix.build_env.pkgarch }}/telegram_openwrt/*.ipk release/
           # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/telegram_openwrt/*.ipk release/
 
+
+
       - name: Release
         uses: softprops/action-gh-release@v1
         continue-on-error: true
         with:
-          files: awgrelease/*.ipk
+          files: release/*.ipk
