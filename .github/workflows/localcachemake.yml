@@ -29,6 +29,9 @@ jobs:
           #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
 
     steps:
+      - name: clean
+        run: |
+          rm -rf ./
       - name: Cache nipeharefa/gh-actions-local-cache
         uses: nipeharefa/gh-actions-local-cache@main #https://github.com/nipeharefa/gh-actions-local-cache
         with:
@@ -69,9 +72,9 @@ jobs:
       # - name: Checkout openwrt
       #   run: |    
       #     git clone --depth 1 --branch v${{ matrix.build_env.tag }} https://github.com/openwrt/openwrt.git .
-      - name: Checkout openwrt
-        run: |    
-          git pull --force
+      # - name: Checkout openwrt
+      #   run: |    
+      #     git pull --force
       # - name: configs and feeds
       #   run: |
       #     wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
