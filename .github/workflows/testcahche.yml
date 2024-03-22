@@ -1,0 +1,345 @@
+name: Create Release on Tag
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+# orig https://github.com/yury-sannikov/awg-openwrt/blob/master/.github/workflows/build-module.yml
+# passwall from https://github.com/xiaorouji/openwrt-passwall/blob/main/.github/workflows/Auto%20compile%20with%20openwrt%20sdk.yml
+# 3proxy https://github.com/osnosn/3proxy-openwrt
+# helloworld https://github.com/fw876/helloworld
+
+jobs:
+  build:
+    name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
+    runs-on: [self-hosted, ubuntu]
+    # runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build_env:
+          - tag: "23.05.0"
+            pkgarch: mipsel_24kc
+            target: ramips
+            subtarget: mt7621
+            vermagic: "9c242f353867f49a96054ff8c9f2c460"
+          # - tag: "23.05.2"
+          #   pkgarch: mipsel_24kc
+          #   target: ramips
+          #   subtarget: mt7621
+          #   vermagic: "9c242f353867f49a96054ff8c9f2c460"  
+
+    steps:
+    #   - uses: actions/checkout@v4
+    #     with:
+    #       repository: openwrt/openwrt
+    #       ref: v${{ matrix.build_env.tag }}
+    #       fetch-depth: 0
+    
+      - name: runrunrun
+        run: |
+            ls -la
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache
+        uses: nipeharefa/gh-actions-local-cache@main
+        with:
+          path: |
+            openwrt
+          key: cache-${{ hashFiles('readme.md') }}
+          storage: /root/gh-cache
+
+      - run: |
+          ls -la /root/gh-cache
+          ls -la
+
+    #   - name: Local cache for API dependencies
+    #     id: api-cache
+    #     uses: MasterworksIO/action-local-cache@2
+    #     with:
+    #       path: './api/node_modules/'
+    #       key: 'api-dependencies-v1'
+
+    #   - name: Install dependencies
+    #     run: cd api/ && npm install
+    #     if: steps.api-cache.outputs.cache-hit != 'true'
+
+    #   - name: Do your stuff
+    #     run: npm run build
+
+
+
+
+
+
+
+    #   - uses: actions/checkout@v4
+    #     with:
+    #       repository: openwrt/openwrt
+    #       ref: v${{ matrix.build_env.tag }}
+    #       fetch-depth: 0
+      
+
+
+    #   - name: Cache Tools and Kernel
+    #     id: cache-tools-kernel
+    #     uses: actions/cache@v4
+    #     env:
+    #       cache-name: "cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-${{ matrix.build_env.target}}-${{ matrix.build_env.subtarget}}"
+    #     with:
+    #       path: "**"
+    #       key: ${{ runner.os }}-build-vm4-${{ env.cache-name }}
+    #       restore-keys: |
+    #         ${{ runner.os }}-build-vm4-cache-tools-kernel-${{ matrix.build_env.tag }}-${{ matrix.build_env.pkgarch}}-
+
+    #   - name: Tree form gits and configs
+    #     if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+    #     run: |
+    #       echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"
+
+    #       # Setup & install feeds
+    #       wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/feeds.buildinfo -O feeds.conf
+    #       # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/feeds.buildinfo -O feeds.conf
+          
+    #       # echo "src-git luci https://github.com/openwrt/luci.git;openwrt-23.05" >> feeds.conf
+    #       # echo "src-git packages https://git.openwrt.org/feed/packages.git;openwrt-23.05" >> feeds.conf
+    #       # echo "src-git base https://github.com/openwrt/openwrt.git;openwrt-23.05" >> feeds.conf
+    #       # echo "src-git telephony https://git.openwrt.org/feed/telephony.git;openwrt-23.05"  >> feeds.conf
+    #       # echo "src-git routing https://git.openwrt.org/feed/routing.git;openwrt-23.05"  >> feeds.conf
+
+    #       echo "src-git runalsh https://github.com/runalsh/openwrt-action-mipsel_24kc.git" >> ./feeds.conf
+          
+    #       #echo "src-git runalsh https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
+    #       #;a3294d150a664736722ca4d4e9b5301bc130e7b4
+
+    #       # echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> ./feeds.conf
+    #       # echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages" >> ./feeds.conf
+
+    #       # echo "src-git 3proxy https://github.com/osnosn/3proxy-openwrt" >> ./feeds.conf
+
+    #       # echo "src-git helloworld https://github.com/fw876/helloworld" >> ./feeds.conf
+
+    #       # echo "src-git telegram_openwrt https://github.com/alexwbaule/telegramopenwrt^1.1.1" >> ./feeds.conf
+
+    #       # ./scripts/feeds clean
+    #       ./scripts/feeds update -a && ./scripts/feeds install -a
+
+    #       # Setup config with AWG and dependencies
+    #       wget https://downloads.openwrt.org/releases/${{ matrix.build_env.tag }}/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/config.buildinfo -O .config
+    #       # wget https://downloads.openwrt.org/releases/23.05.0/targets/ramips/mt7621/config.buildinfo -O .config
+          
+    #       echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
+    #       echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
+    #       echo "CONFIG_PACKAGE_luci-proto-amneziawg=y" >> .config
+    #       echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20=m" >> .config
+    #       echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
+    #       echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
+
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_Nftables_Transparent_Proxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Haproxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Hysteria=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Server=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Simple_Obfs=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_SingBox=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_Plus=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_tuic_client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Geodata=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Plugin=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray_Plugin=y" >> .config
+
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_Iptables_Transparent_Proxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_Nftables_Transparent_Proxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Brook=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Haproxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Hysteria=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_NaiveProxy=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Libev_Client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Libev_Server=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Server=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_ShadowsocksR_Libev_Client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_ShadowsocksR_Libev_Server=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Simple_Obfs=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_SingBox=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_tuic_client=y" >> .config
+    #       # echo "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_V2ray_Plugin=y" >> .config
+
+    #       # echo "CONFIG_PACKAGE_luci-app-openclash=y" >> .config
+
+    #       # echo "CONFIG_PACKAGE_3proxy=y" >> .config
+
+    #       # echo "CONFIG_PACKAGE_telegram_openwrt=y" >> .config
+
+    #       make defconfig
+      
+    #       # make tools/install -i -j `nproc`
+    #       # make toolchain/install  -i -j `nproc`
+    #       # make target/linux/compile  -i -j `nproc` V=s
+
+    #       # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+    #       # VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+
+    #       # if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+    #       #   echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+    #       #   exit 1
+    #       # fi
+
+    #   - name: Building tools
+    #     if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+    #     run: |
+    #       echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"    
+          
+    #       cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
+
+    #       echo "current $(date)"
+    #       echo "    > make tools/install"
+    #       make tools/install -i -j `nproc`  V=s
+
+    #   - name: Building toolchain
+    #     if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+    #     run: |
+    #       echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"   
+
+    #       cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
+
+    #       echo "current $(date)"
+    #       echo "    > make toolchain/install"
+    #       make toolchain/install  -i -j `nproc`  V=s
+
+    #   - name: Building linux
+    #     if: ${{ steps.cache-tools-kernel.outputs.cache-hit != 'true' }}
+    #     run: |
+    #       echo "pkgarch: ${{ matrix.build_env.pkgarch}}, target:${{ matrix.build_env.target}}, subtarget: ${{ matrix.build_env.subtarget}}"      
+
+    #       cat ./build_dir/target-*/linux-*/linux-*/.vermagic || true
+
+    #       echo "current $(date)"
+    #       # compile kernel module
+    #       echo "    > make target/linux/compile"
+    #       make target/linux/compile  -i -j `nproc` V=s
+
+    #       # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+    #       # VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+
+    #       # if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+    #       #   echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+    #       #   exit 1
+    #       # fi
+
+    #   - name: Build AmneziaWG
+    #     run: |
+    #       # VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+    #       # echo "Vermagic: $VERMAGIC"
+
+    #       # VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+
+    #       # if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+    #       #   echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+    #       #   exit 1
+    #       # fi
+
+    #       echo "current $(date)"
+    #       # Ignore kmod build for some targets, replace with the awg-go
+    #       make package/kmod-amneziawg/{clean,download,prepare} V=s -j `nproc`
+    #       make package/kmod-amneziawg/compile V=s -j `nproc`
+
+    #       # make package/luci-app-amneziawg/{clean,download,prepare} V=s -j `nproc`
+    #       # make package/luci-app-amneziawg/compile V=s -j `nproc`
+
+    #       make package/luci-proto-amneziawg/{clean,download,prepare} V=s -j `nproc`
+    #       make package/luci-proto-amneziawg/compile V=s -j `nproc`
+
+    #       make package/amneziawg-tools/{clean,download,prepare} V=s  -j `nproc`
+    #       make package/amneziawg-tools/compile V=s -j `nproc`
+
+    #   # - name: Build PassWall
+    #   #   run: |
+    #   #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+    #   #       echo "Vermagic: $VERMAGIC"
+  
+    #   #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+  
+    #   #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+    #   #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+    #   #         exit 1
+    #   #       fi
+            
+    #   #       echo "current $(date)"
+    #   #       make package/luci-app-passwall/{clean,download,prepare} V=s -j `nproc` || true
+    #   #       make package/luci-app-passwall/compile V=s -j `nproc` || true
+
+    #   # - name: Build 3proxy
+    #   #   run: |
+    #   #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+    #   #       echo "Vermagic: $VERMAGIC"
+  
+    #   #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+  
+    #   #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+    #   #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+    #   #         exit 1
+    #   #       fi
+  
+    #   #       echo "current $(date)"
+    #   #       make package/3proxy/{clean,download,prepare} V=s -j `nproc` || true
+    #   #       make package/3proxy/compile V=s -j `nproc` || true        
+          
+    #   # - name: Build helloworld
+    #   #   run: |
+    #   #       VERMAGIC=`cat ./build_dir/target-*/linux-*/linux-*/.vermagic`
+    #   #       echo "Vermagic: $VERMAGIC"
+  
+    #   #       VERMAGIC_EXPECTED=${{ matrix.build_env.vermagic }}
+  
+    #   #       if [ "$VERMAGIC" != "$VERMAGIC_EXPECTED" ]; then
+    #   #         echo Vermagic mismatch: $VERMAGIC, expected $VERMAGIC_EXPECTED
+    #   #         exit 1
+    #   #       fi
+  
+    #   #       echo "current $(date)"
+    #   #       make package/helloworld/{clean,download,prepare} V=s -j `nproc` || true
+    #   #       make package/helloworld/compile V=s -j `nproc` || true         
+            
+    #   - name: Prepare artifacts
+    #     continue-on-error: true
+    #     run: |
+    #       tag_name=${{  github.ref_name }}
+    #       mkdir -p awgrelease
+    #       postfix="${tag_name}_v${{ matrix.build_env.tag }}_${{ matrix.build_env.pkgarch}}_${{ matrix.build_env.target}}_${{ matrix.build_env.subtarget}}"
+    #       cp bin/packages/${{ matrix.build_env.pkgarch }}/runalsh/amneziawg-tools_*.ipk awgrelease/amneziawg-tools_${postfix}.ipk
+    #       cp bin/packages/${{ matrix.build_env.pkgarch }}/runalsh/luci-app-amneziawg_*.ipk awgrelease/luci-app-amneziawg_${postfix}.ipk
+    #       cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/kmod-amneziawg_*.ipk awgrelease/kmod-amneziawg_${postfix}.ipk
+
+    #       # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall/*.ipk release/
+    #       # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/luci-app-passwall*.ipk release/luci-app-passwall_${postfix}.ipk
+    #       # cp bin/packages/${{ matrix.build_env.pkgarch }}/passwall_packages/*.ipk release/
+    #       # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/passwall_packages*.ipk release/
+
+    #       # cp bin/packages/${{ matrix.build_env.pkgarch }}/3proxy/*.ipk release/
+    #       # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/*.ipk release/
+            
+    #       # cp bin/packages/${{ matrix.build_env.pkgarch }}/helloworld/*.ipk release/
+    #       # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/helloworld/*.ipk release/
+
+    #       # cp bin/packages/${{ matrix.build_env.pkgarch }}/telegram_openwrt/*.ipk release/
+    #       # cp bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/telegram_openwrt/*.ipk release/
+
+    #   - name: Release
+    #     uses: softprops/action-gh-release@v1
+    #     continue-on-error: true
+    #     with:
+    #       files: awgrelease/*.ipk
