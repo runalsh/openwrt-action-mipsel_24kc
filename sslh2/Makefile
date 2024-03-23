@@ -46,7 +46,7 @@ define Package/sslh2/conffiles
 endef
 
 MAKE_FLAGS += \
-  USELIBCAP=1
+  USELIBCAP=
 
 define Package/sslh2/install
 	$(INSTALL_DIR) $(1)/usr/sbin
