@@ -153,6 +153,8 @@ jobs:
           #     curl -sO https://$mirror/openwrt/patch/openssl/quic/0044-QUIC-Update-metadata-version.patch
           # popd
 
+
+          # rm -rf packages/net/sslh
           # ./scripts/feeds clean
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
@@ -213,7 +215,7 @@ jobs:
 
           # echo "CONFIG_PACKAGE_telegram_openwrt=y" >> .config
 
-          # echo "CONFIG_PACKAGE_sslh2=y" >> .config
+          # echo "CONFIG_PACKAGE_sslh=y" >> .config
 
           # echo "CONFIG_PACKAGE_stunnel=y" >> .config
 
