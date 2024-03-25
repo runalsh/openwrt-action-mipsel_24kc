@@ -2,6 +2,8 @@ github action for compiling ipks mipsel-24kc
 
 plans:
 
+https://github.com/rtaserver/openwrt-repository/blob/main/.github/workflows/autosyncpackage.yml
+
 https://github.com/gSpotx2f/ruantiblock_openwrt
 
 https://github.com/lisaac/luci-app-dockerman/tree/master/applications/luci-app-dockerman
