@@ -1,6 +1,6 @@
 github action for compiling ipks mipsel-24kc
 
-plans:
+notes:
 
 https://github.com/rtaserver/openwrt-repository/blob/main/.github/workflows/autosyncpackage.yml
 
